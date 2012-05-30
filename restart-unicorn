@@ -5,7 +5,7 @@
 ## <scalisi.a@gmail.com>
 ##
 ## Started on  Wed May 30 13:12:24 2012 Anthony Scalisi
-## Last update Wed May 30 13:46:25 2012 Anthony Scalisi
+## Last update Wed May 30 15:37:32 2012 Anthony Scalisi
 ##
 
 hostname=`hostname`
@@ -27,14 +27,18 @@ case "$1" in
             SOFT)
                	case "$3" in
                	    2)
-                      	echo "`date` - Unicorn workers using too much memory, about to reload master, (3rd soft critical state) - SOFT"  >> $log_path/eventhandlers.log
+                      	echo "`date` - Unicorn workers using too much memory, about to reload master, (3rd soft critical state) - SOFT"
+			echo "`date` - Unicorn workers using too much memory, about to reload master, (3rd soft critical state) - SOFT"  >> $log_path/eventhandlers.log
                   	;;
 		esac
 		;;
 	    HARD)
+		echo "`date` - Unicorn - Reloading master - HARD"
 		echo "`date` - Unicorn - Reloading master - HARD"  >> $log_path/eventhandlers.log
+		echo "`date` - Unicorn - kill -USR2 `cat "$PID"`"
 		echo "`date` - Unicorn - kill -USR2 `cat "$PID"`" >> $log_path/eventhandlers.log
 		echo "`date` - Unicorn - end of the eventhandler"
+		echo "`date` - Unicorn - end of the eventhandler" >> $log_path/eventhandlers.log
 		;;
 	esac
 	;;
