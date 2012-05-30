@@ -26,15 +26,13 @@ case "$1" in
         case "$2" in
             SOFT)
                	case "$3" in
-               	    3)
-                  	echo -n "Reloading Unicorn (3rd soft critical state)..."
+               	    2)
                       	echo "`date` - Unicorn workers using too much memory, about to reload master, (3rd soft critical state) - SOFT"  >> $log_path/eventhandlers.log
                   	;;
 		esac
 		;;
 	    HARD)
-                echo -n "Reloading Unicorn (Hard State)"
-		echo "`date` - Unicron - Reloading master - HARD"  >> $log_path/eventhandlers.log
+		echo "`date` - Unicorn - Reloading master - HARD"  >> $log_path/eventhandlers.log
 		echo "`date` - Unicorn - kill -USR2 `cat "$PID"`" >> $log_path/eventhandlers.log
 		echo "`date` - Unicorn - end of the eventhandler"
 		;;
