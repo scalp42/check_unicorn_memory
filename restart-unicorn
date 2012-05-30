@@ -5,10 +5,9 @@
 ## <scalisi.a@gmail.com>
 ##
 ## Started on  Wed May 30 13:12:24 2012 Anthony Scalisi
-## Last update Wed May 30 13:29:38 2012 Anthony Scalisi
+## Last update Wed May 30 13:46:25 2012 Anthony Scalisi
 ##
 
-date=`date`
 hostname=`hostname`
 
 RAILS_ROOT=/home/deploy/www/taskrabbit/current
@@ -29,15 +28,15 @@ case "$1" in
                	case "$3" in
                	    3)
                   	echo -n "Reloading Unicorn (3rd soft critical state)..."
-                      	echo "${ip} - $date - Unicorn workers using too much memory, about to reload master, (3rd soft critical state) - SOFT"  >> $log_path/eventhandlers.log
+                      	echo "`date` - Unicorn workers using too much memory, about to reload master, (3rd soft critical state) - SOFT"  >> $log_path/eventhandlers.log
                   	;;
 		esac
 		;;
 	    HARD)
                 echo -n "Reloading Unicorn (Hard State)"
-		echo "${ip} - $date - Unicron - Reloading master - HARD"  >> $log_path/eventhandlers.log
-		echo "${ip} - $date - Unicorn - kill -USR2 `cat "$PID"`" >> $log_path/eventhandlers.log
-		echo "${ip} - $date - Unicorn - end of the eventhandler"
+		echo "`date` - Unicron - Reloading master - HARD"  >> $log_path/eventhandlers.log
+		echo "`date` - Unicorn - kill -USR2 `cat "$PID"`" >> $log_path/eventhandlers.log
+		echo "`date` - Unicorn - end of the eventhandler"
 		;;
 	esac
 	;;
