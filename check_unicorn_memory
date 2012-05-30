@@ -41,5 +41,5 @@ for i in ${pids[@]}; do
     fi
 done
 
-echo "OK - Unicorn workers memory usage : $mem"
+echo "OK - Unicorn worker memory usage : $mem"
 exit ${OK_STATE}

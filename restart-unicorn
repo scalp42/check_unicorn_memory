@@ -1,0 +1,44 @@
+#!/bin/bash
+## restart-unicorn for restart-unicorn in /Users/fresh/nagios/check_unicorn_memory
+##
+## Made by Anthony Scalisi
+## <scalisi.a@gmail.com>
+##
+## Started on  Wed May 30 13:12:24 2012 Anthony Scalisi
+## Last update Wed May 30 13:13:18 2012 Anthony Scalisi
+##
+
+date=`date`
+hostname=`hostname`
+
+RAILS_ROOT=/home/deploy/www/taskrabbit/current
+log_path=/usr/local/nagios/var
+PID="$RAILS_ROOT"/tmp/pids/unicorn.pid
+
+
+case "$1" in
+    OK)
+	;;
+    UNKNOWN)
+	;;
+    WARNING)
+	;;
+    CRITICAL)
+        case "$2" in
+            SOFT)
+               	case "$3" in
+               	    3)
+                  	echo -n "Reloading Unicorn (3rd soft critical state)..."
+                      	echo "${ip} - $date - Unicorn workers using too much memory, about to reload master - SOFT"  >> $log_path/eventhandlers.log
+                  	;;
+		esac
+		;;
+	    HARD)
+                echo -n "Reloading Unicorn (Hard State)"
+		echo "${ip} - $date - Unicon - Reloading master - HARD"  >> $log_path/eventhandlers.log
+		echo "${ip} - $date - Unicon - kill -USR2 `cat "$PID"`" >> $log_path/eventhandlers.log
+		;;
+	esac
+	;;
+esac
+exit 0
