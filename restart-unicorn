@@ -37,6 +37,7 @@ case "$1" in
 		echo "`date` - Unicorn - Reloading master - HARD"  >> $log_path/eventhandlers.log
 		echo "`date` - Unicorn - kill -USR2 `cat "$PID"`"
 		echo "`date` - Unicorn - kill -USR2 `cat "$PID"`" >> $log_path/eventhandlers.log
+		kill -USR2 `cat "$PID"`
 		echo "`date` - Unicorn - end of the eventhandler"
 		echo "`date` - Unicorn - end of the eventhandler" >> $log_path/eventhandlers.log
 		;;
