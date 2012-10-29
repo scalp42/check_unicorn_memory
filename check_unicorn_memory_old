@@ -1,0 +1,45 @@
+#!/bin/bash
+## check_unicorn_memory.sh for check_unicorn_memory in /Users/fresh/nagios/check_unicorn_memory
+##
+## Made by Anthony Scalisi
+## <scalisi.a@gmail.com>
+##
+## Started on  Wed May 30 11:55:22 2012 Anthony Scalisi
+## Last update Wed May 30 11:57:13 2012 Anthony Scalisi
+##
+
+OK_STATE=0
+WARNING_STATE=1
+CRITICAL_STATE=2
+UNKNOWN_STATE=3
+EXPECTED_ARGS=4
+E_BADARGS=65
+
+if [[ "$#" -ne "$EXPECTED_ARGS" || "$1" != '-w' || "$3" != '-c' ]]; then
+    echo "Usage: `basename $0` [-w] worker_memory_MiB [-c] worker_memory_MiB"
+    exit ${UNKNOWN_STATE}
+elif [[ "$4" -lt "$2" ]]; then
+    echo "UNKNOWN - Critical value < Warning value. Please verify parameters."
+    exit ${UNKNOWN_STATE}
+elif [[ "$2" -le 0 || "$4" -le 0 ]]; then
+    echo "UNKNOWN - Warning or Critical values can't be negative. Please verify parameters."
+    exit ${UNKNOWN_STATE}
+fi
+
+pids=(`ps awx | grep "unicorn_rails worker" | grep -v grep | awk '{print $1}' | tr '\n' ' '`)
+
+for i in ${pids[@]}; do
+    mem=`/usr/bin/pmap ${pids[$count]} | tail -n 1 | awk '{print $2}' | sed 's/K/ \/ 1000/;s/G/ * 1000/' | bc`
+    if [[ "$mem" -ge $2 && "$mem" -lt $4 ]]; then
+        echo "WARNING - Unicorn worker memory high : $mem mb"
+        exit ${WARNING_STATE}
+    elif [[ "$mem" -ge $2 && "$mem" -ge $4 ]]; then
+        echo "CRITICAL - Unicorn worker memory too high : $mem mb"
+	exit ${CRITICAL_STATE}
+    else
+        (( count++ ))
+    fi
+done
+
+echo "OK - Unicorn worker memory usage : $mem mb"
+exit ${OK_STATE}
