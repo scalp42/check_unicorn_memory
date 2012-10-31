@@ -16,36 +16,36 @@ PID="$RAILS_ROOT"/tmp/pids/unicorn.pid
 
 
 case "$1" in
-    OK)
-	;;
-    UNKNOWN)
-	;;
-    WARNING)
-	;;
-    CRITICAL)
-        case "$2" in
-            SOFT)
-               	case "$3" in
-               	    2)
-                      	echo "`date` - Unicorn workers using too much memory, about to kill master, (3rd soft critical state) - SOFT"
-			echo "`date` - Unicorn workers using too much memory, about to kill master, (3rd soft critical state) - SOFT"  >> $log_path/eventhandlers.log
-                  	;;
-		esac
-		;;
-	    HARD)
-		echo "`date` - Unicorn - Killing master - HARD"
-		echo "`date` - Unicorn - Killing master - HARD" >> $log_path/eventhandlers.log
-		echo "`date` - Unicorn - kill -9 `cat "$PID"`"
-		echo "`date` - Unicorn - kill -9 `cat "$PID"`" >> $log_path/eventhandlers.log
-		kill -9 `cat "$PID"`
-		echo "`date` - Unicorn - Launching Unicorn - HARD"
-		echo "`date` - Unicorn - Launching Unicorn - HARD" >> $log_path/eventhandlers.log
-		echo "`date` - Unicorn - bundle exec unicorn_rails -c /home/deploy/www/taskrabbit/current/config/unicorn/staging.rb -D" >> $log_path/eventhandlers.log
-		su - deploy -m -c ". /home/deploy/.bash_profile && cd /home/deploy/www/taskrabbit/current && /home/deploy/opt/ree/bin/bundle exec unicorn_rails -c /home/deploy/www/taskrabbit/current/config/unicorn/staging.rb -D"
-		echo "`date` - Unicorn - end of the eventhandler"
-		echo "`date` - Unicorn - end of the eventhandler" >> $log_path/eventhandlers.log
-		;;
-	esac
-	;;
+  OK)
+  ;;
+  UNKNOWN)
+  ;;
+  WARNING)
+  ;;
+  CRITICAL)
+case "$2" in
+  SOFT)
+case "$3" in
+  2)
+    echo "`date` - Unicorn workers using too much memory, about to kill master, (3rd soft critical state) - SOFT"
+    echo "`date` - Unicorn workers using too much memory, about to kill master, (3rd soft critical state) - SOFT"  >> $log_path/eventhandlers.log
+  ;;
+esac
+  ;;
+  HARD)
+    echo "`date` - Unicorn - Killing master - HARD"
+    echo "`date` - Unicorn - Killing master - HARD" >> $log_path/eventhandlers.log
+    echo "`date` - Unicorn - kill -9 `cat "$PID"`"
+    echo "`date` - Unicorn - kill -9 `cat "$PID"`" >> $log_path/eventhandlers.log
+    kill -9 `cat "$PID"`
+    echo "`date` - Unicorn - Launching Unicorn - HARD"
+    echo "`date` - Unicorn - Launching Unicorn - HARD" >> $log_path/eventhandlers.log
+    echo "`date` - Unicorn - bundle exec unicorn_rails -c $RAILS_ROOT/config/unicorn/staging.rb -D" >> $log_path/eventhandlers.log
+    su - deploy -m -c ". /home/deploy/.bash_profile && cd $RAILS_ROOT && bundle exec unicorn_rails -c $RAILS_ROOT/config/unicorn/staging.rb -D"
+    echo "`date` - Unicorn - end of the eventhandler"
+    echo "`date` - Unicorn - end of the eventhandler" >> $log_path/eventhandlers.log
+    ;;
+esac
+;;
 esac
 exit 0
